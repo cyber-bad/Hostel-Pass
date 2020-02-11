@@ -1,24 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Gate Scanner</title>
+  <title>Hostel Gate</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <!-- Fonts Links -->
+  <link href="https://fonts.googleapis.com/css?family=Monda&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
-<body>
+
+
+<body style="background-color: white; font-family: 'Monda', sans-serif;">
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<strong>
+    	<a class="navbar-brand" href="#" style="font-family: 'Monda', sans-serif; font-size: 50px;"> Hostel Gate </a> </strong>
+	</nav>
+
 <center>
 
-    <p style="font-size:40px"> Scan Here </p>
-    <a href="{{url_for('gate')}}"> Click to SCAN </a>
+		<div class="container">
+
+			<div class="row">
+				<div class="col-lg-12">
+					<br> <br>
+					<p style="font-size: 45px"> TNPS Boys Hostel  </p>
+					<p style="font-size: 25px"> Back to Hostel <br> Gate Pass </p>
+					<a href="{{url_for('gate')}}">
+					<p class="button1" style="display: inline-block;
+    					text-align: center;
+    					padding: 15px 30px;
+   		 				color: #fff;
+    					background-color: #ff5248;
+    					min-width: 270px;
+    					letter-spacing: .15em;
+    					line-height: 1.1428;
+    					border-radius: 5px;
+    					text-decoration: none;">
+    					<strong>  CLICK TO SCAN </strong>
+    				</p>
+				</a>
+				</div>
+			</div>
+		</div>
 
 
-    <br><br>
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-lg-12">
+					<br> <br>
+					<p style="font-size:30px"> Student Name </p>
+
+
+					<p style="font-size:40px">
+        				{{gated}}
+   					</p>
+
+				</div>
+			</div>
+		</div>
+
+
+
+ <!--    <p style="font-size:40px"> Scan Here </p>
+    <a href="{{url_for('dabbu')}}"> Click to SCAN </a> -->
+<!--    <a href="..\templates.dabbu.html"> Close Camera </a>-->
+
+   <!--  <br><br>
 
     <p style="font-size:30px">
         Student Name
-    </p>
-    <p style="font-size:40px">
-        {{gated}}
-    </p>
+    </p> -->
+
 </center>
 
 

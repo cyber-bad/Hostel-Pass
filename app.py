@@ -102,12 +102,11 @@ def signup():
                 version=1,
                 box_size=10,
                 border=5)
-            data = (name)
+            data = (email)
             qr.add_data(data)
             qr.make(fit=True)
             img = qr.make_image(fill="black", back_color="white")
             img.save("static\qrs\%s.png"%(email))
-
 
 
             cur = mysql.connection.cursor()
@@ -152,8 +151,10 @@ def dabbu():
             barcodeData = barcode.data.decode("utf-8")
             # barcodeType = barcode.type
 
+            # time.sleep(5)
 
-            print(barcodeData)
+
+            # print(barcodeData)
             pdata = barcodeData
             cango = "done"
 
@@ -161,19 +162,30 @@ def dabbu():
             cursor = mysql.connection.cursor()
 
             cursor.execute('''
-                        UPDATE flask.users
+                        UPDATE users
 
                         SET permission = %s                            
 
-                        WHERE name = %s       
+                        WHERE email = %s       
                         ''',(cango,pdata))
 
             mysql.connection.commit()
 
+            cursor.execute('SELECT * FROM users WHERE email = %s', ({pdata}))
+
+            bdata = cursor.fetchone()
+
+            name = bdata[1]
+
+            # print(name)
+
+
+
             if barcodeData is None:
+                vs.stop()
                 return render_template('dabbu.html')
             else:
-                return render_template('dabbu.html', dabbud=pdata)
+                return render_template('dabbu.html', dabbud=name)
 
 
 
@@ -201,7 +213,7 @@ def dabbu():
     # print("[INFO] cleaning up...")
     # csv.close()
     # cv2.destroyAllWindows()
-    # vs.stop()
+    vs.stop()
     return render_template('dabbu.html')
 
 
@@ -269,17 +281,25 @@ def gate():
             cursor = mysql.connection.cursor()
 
             cursor.execute('''
-                        UPDATE flask.users
-                        SET permission = %s                      
-                        WHERE name = %s       
-                        ''',(cango,pdata))
+                                    UPDATE users
+
+                                    SET permission = %s                            
+
+                                    WHERE email = %s       
+                                    ''', (cango, pdata))
 
             mysql.connection.commit()
+
+            cursor.execute('SELECT * FROM users WHERE email = %s', ({pdata}))
+
+            bdata = cursor.fetchone()
+
+            name = bdata[1]
 
             if barcodeData is None:
                 return render_template('gate.html')
             else:
-                return render_template('gate.html', gated=pdata)
+                return render_template('gate.html', gated=name)
 
         break
 
