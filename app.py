@@ -57,13 +57,9 @@ def login():
             permission = account[5]
             print(permission)
 
-            imp = (permission == 'done')
+            imp = (permission == 'yes')
 
             ddata = email
-
-
-
-
 
 
 
@@ -156,7 +152,7 @@ def dabbu():
 
             # print(barcodeData)
             pdata = barcodeData
-            cango = "done"
+            cango = "yes"
 
 
             cursor = mysql.connection.cursor()
@@ -185,6 +181,7 @@ def dabbu():
                 vs.stop()
                 return render_template('dabbu.html')
             else:
+                vs.stop()
                 return render_template('dabbu.html', dabbud=name)
 
 
@@ -255,8 +252,89 @@ def dabbu():
 
 
 
-@app.route('/gate/',methods=['GET', 'POST'])
-def gate():
+# @app.route('/gate/',methods=['GET', 'POST'])
+# def gate():
+#
+#
+#     ap = argparse.ArgumentParser()
+#     ap.add_argument("-o", "--output", type=str, default="barcodes.csv",
+#                     help="path to output CSV file containing barcodes")
+#     vs = VideoStream(src=0).start()
+#
+#     while True:
+#
+#         frame = vs.read()
+#         frame = imutils.resize(frame, width=400)
+#         cv2.line(frame, (85, 50), (100, 50), (255, 255, 255), 2)
+#
+#         barcodes = pyzbar.decode(frame)
+#         for barcode in barcodes:
+#             barcodeData = barcode.data.decode("utf-8")
+#
+#             print(barcodeData)
+#             pdata = barcodeData
+#
+#
+#             cursor = mysql.connection.cursor()
+#
+#             cursor.execute('SELECT * FROM users WHERE email = %s', ({pdata}))
+#
+#             bdata = cursor.fetchone()
+#
+#
+#
+#             # going to city
+#
+#             where = "outhostel"
+#
+#             cursor = mysql.connection.cursor()
+#
+#             cursor.execute('''
+#                                                 UPDATE users
+#
+#                                                 SET status = %s
+#
+#                                                 WHERE email = %s
+#                                                 ''', (where, pdata))
+#
+#             mysql.connection.commit()
+#
+#
+#
+#             # back to hostel
+#
+#             status = "outhostel"
+#
+#             cango = "no"
+#
+#             cursor.execute('''
+#                                                 UPDATE users
+#
+#                                                 SET permission = %s
+#
+#                                                 WHERE email = %s AND status = %s
+#                                                 ''', (cango, pdata, status))
+#
+#             mysql.connection.commit()
+#
+#
+#             name = bdata[1]
+#
+#             if barcodeData is None:
+#                 return render_template('gate.html')
+#             else:
+#                 return render_template('gate.html', gated=name)
+#
+#         break
+#
+#     vs.stop()
+#     return render_template('gate.html')
+
+
+
+
+@app.route('/out/',methods=['GET', 'POST'])
+def out():
 
 
     ap = argparse.ArgumentParser()
@@ -276,19 +354,45 @@ def gate():
 
             print(barcodeData)
             pdata = barcodeData
-            cango = "undone"
+
+
+            cursor = mysql.connection.cursor()
+
+
+
+            # going to city
+
+            where = "outhostel"
 
             cursor = mysql.connection.cursor()
 
             cursor.execute('''
-                                    UPDATE users
+                                                UPDATE users
 
-                                    SET permission = %s                            
+                                                SET status = %s                            
 
-                                    WHERE email = %s       
-                                    ''', (cango, pdata))
+                                                WHERE email = %s       
+                                                ''', (where, pdata))
 
             mysql.connection.commit()
+
+
+
+            # # back to hostel
+            #
+            # status = "outhostel"
+            #
+            # cango = "no"
+            #
+            # cursor.execute('''
+            #                                     UPDATE users
+            #
+            #                                     SET permission = %s
+            #
+            #                                     WHERE email = %s AND status = %s
+            #                                     ''', (cango, pdata, status))
+            #
+            # mysql.connection.commit()
 
             cursor.execute('SELECT * FROM users WHERE email = %s', ({pdata}))
 
@@ -296,15 +400,107 @@ def gate():
 
             name = bdata[1]
 
+
             if barcodeData is None:
-                return render_template('gate.html')
+                vs.stop()
+                return render_template('out.html')
             else:
-                return render_template('gate.html', gated=name)
+                vs.stop()
+                return render_template('out.html', gated=name)
 
         break
 
     vs.stop()
-    return render_template('gate.html')
+    return render_template('out.html')
+
+
+
+
+@app.route('/back/',methods=['GET', 'POST'])
+def back():
+
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-o", "--output", type=str, default="barcodes.csv",
+                    help="path to output CSV file containing barcodes")
+    vs = VideoStream(src=0).start()
+
+    while True:
+
+        frame = vs.read()
+        frame = imutils.resize(frame, width=400)
+        cv2.line(frame, (85, 50), (100, 50), (255, 255, 255), 2)
+
+        barcodes = pyzbar.decode(frame)
+        for barcode in barcodes:
+            barcodeData = barcode.data.decode("utf-8")
+
+            print(barcodeData)
+            pdata = barcodeData
+
+
+            cursor = mysql.connection.cursor()
+
+            cursor.execute('SELECT * FROM users WHERE email = %s', ({pdata}))
+
+            bdata = cursor.fetchone()
+
+
+            # back to hostel
+
+            status = "outhostel"
+
+            upstatus = "inhostel"
+
+            cango = "no"
+
+            cursor.execute('''
+                                                UPDATE users
+
+                                                SET permission = %s
+
+                                                WHERE email = %s 
+                                                ''', (cango, pdata))
+
+            mysql.connection.commit()
+
+            cursor.execute('''
+                                                                        UPDATE users
+
+                                                                        SET status = %s
+
+                                                                        WHERE email = %s 
+                                                                        ''', (upstatus, pdata))
+
+            mysql.connection.commit()
+
+            # cursor.execute('''
+            #                                                 UPDATE users
+            #
+            #                                                 SET status = %s
+            #
+            #                                                 WHERE email = %s
+            #                                                 ''', ({upstatus}))
+            #
+            # mysql.connection.commit()
+
+
+            name = bdata[1]
+
+            if barcodeData is None:
+                vs.stop()
+                return render_template('back.html')
+            else:
+                vs.stop()
+                return render_template('back.html', gated=name)
+
+        break
+
+    vs.stop()
+    return render_template('back.html')
+
+
+
 
 
 
